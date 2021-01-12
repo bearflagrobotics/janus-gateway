@@ -7739,7 +7739,7 @@ static void *janus_streaming_relay_thread(void *data) {
 					packet.is_keyframe = FALSE;
 					packet.data->type = mountpoint->codecs.audio_pt;
 					/* Is there a recorder? */
-					janus_rtp_header_update(packet.data, &source->context[0], FALSE, 0);
+					//janus_rtp_header_update(packet.data, &source->context[0], FALSE, 0);
 					if(source->askew) {
 						int ret = janus_rtp_skew_compensate_audio(packet.data, &source->context[0], now);
 						if(ret < 0) {
@@ -7935,7 +7935,7 @@ static void *janus_streaming_relay_thread(void *data) {
 					}
 					packet.data->type = mountpoint->codecs.video_pt;
 					/* Is there a recorder? (FIXME notice we only record the first substream, if simulcasting) */
-					janus_rtp_header_update(packet.data, &source->context[index], TRUE, 0);
+					//janus_rtp_header_update(packet.data, &source->context[index], TRUE, 0);
 					if(source->vskew) {
 						int ret = janus_rtp_skew_compensate_video(packet.data, &source->context[index], now);
 						if(ret < 0) {
@@ -8284,7 +8284,7 @@ static void janus_streaming_relay_rtp_packet(gpointer data, gpointer user_data) 
 				JANUS_LOG(LOG_HUGE, "Sending packet (spatial=%d, temporal=%d)\n",
 					packet->svc_info.spatial_layer, packet->svc_info.temporal_layer);
 				/* Fix sequence number and timestamp (publisher switching may be involved) */
-				janus_rtp_header_update(packet->data, &session->context, TRUE, 0);
+				//janus_rtp_header_update(packet->data, &session->context, TRUE, 0);
 				if(override_mark_bit && !has_marker_bit) {
 					packet->data->markerbit = 1;
 				}
@@ -8363,7 +8363,7 @@ static void janus_streaming_relay_rtp_packet(gpointer data, gpointer user_data) 
 				}
 			} else {
 				/* Fix sequence number and timestamp (switching may be involved) */
-				janus_rtp_header_update(packet->data, &session->context, TRUE, 0);
+				//janus_rtp_header_update(packet->data, &session->context, TRUE, 0);
 				janus_plugin_rtp rtp = { .video = packet->is_video, .buffer = (char *)packet->data, .length = packet->length };
 				janus_plugin_rtp_extensions_reset(&rtp.extensions);
 				if(gateway != NULL)
@@ -8376,7 +8376,7 @@ static void janus_streaming_relay_rtp_packet(gpointer data, gpointer user_data) 
 			if(!session->audio)
 				return;
 			/* Fix sequence number and timestamp (switching may be involved) */
-			janus_rtp_header_update(packet->data, &session->context, FALSE, 0);
+			//janus_rtp_header_update(packet->data, &session->context, FALSE, 0);
 			janus_plugin_rtp rtp = { .video = packet->is_video, .buffer = (char *)packet->data, .length = packet->length };
 			janus_plugin_rtp_extensions_reset(&rtp.extensions);
 			if(gateway != NULL)
